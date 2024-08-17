@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import func
-from app.models import CityWeather
+from .models import CityWeather
 from datetime import datetime
 from app.schemas import WeatherPostResponse
 
