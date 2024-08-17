@@ -9,8 +9,8 @@ from .schemas import (WeatherCreate,
                       WeatherGetResponse,
                       WeatherPostResponse,
                       WeatherQueryParams)
-from app.models import get_db
-from app.worker import fetch_and_store_weather
+from .models import get_db
+from .worker import fetch_and_store_weather
 
 app = FastAPI()
 weather_router = APIRouter()

@@ -4,6 +4,7 @@ FROM python:3.12-slim
 # Set environment varibles
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
+ENV PYTHONPATH="/code"
 
 # Set work directory
 WORKDIR /code
@@ -17,4 +18,4 @@ RUN pip install -r requirements.txt
 COPY . /code/
 
 # Command to run the application
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
