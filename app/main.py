@@ -1,16 +1,16 @@
 from fastapi import FastAPI, Request, Depends, APIRouter
 from fastapi.templating import Jinja2Templates
-from .crud import get_weather_by_date, create_weather_entry
-from .external.weather_api import fetch_weather_data
+from app.crud import get_weather_by_date, create_weather_entry
+from app.external.weather_api import fetch_weather_data
 from sqlalchemy.orm import Session
 from fastapi.responses import HTMLResponse
 from fastapi import HTTPException
-from .schemas import (WeatherCreate,
+from app.schemas import (WeatherCreate,
                       WeatherGetResponse,
                       WeatherPostResponse,
                       WeatherQueryParams)
-from .models import get_db
-from .worker import fetch_and_store_weather
+from app.models import get_db
+from app.worker import fetch_and_store_weather
 
 app = FastAPI()
 weather_router = APIRouter()
