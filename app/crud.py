@@ -40,3 +40,12 @@ def create_weather_entry(
         status="success",
         message="Weather data stored successfully"
     )
+
+def weather_already_exists(db: Session, city: str, date: str):
+    weather_data = get_weather_by_date(db, city, date)
+
+    if weather_data:
+        return True
+
+    return False
+

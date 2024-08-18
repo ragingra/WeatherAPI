@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Request, Depends, APIRouter
 from fastapi.templating import Jinja2Templates
-from .crud import get_weather_by_date, create_weather_entry
+from .crud import get_weather_by_date, create_weather_entry, weather_already_exists
 from .external.weather_api import fetch_weather_data
 from sqlalchemy.orm import Session
 from fastapi.responses import HTMLResponse
@@ -20,6 +20,14 @@ templates = Jinja2Templates(directory="app/templates")
 
 @weather_router.post("/weather/", response_model=WeatherPostResponse)
 def post_weather(weather: WeatherCreate, db: Session = Depends(get_db)):
+    if weather_already_exists(db, weather.city, weather.date):
+        return WeatherPostResponse(
+            city=weather.city,
+            date=weather.date,
+            status="already_exists",
+            message="Weather data already exists."
+    )
+
     weather_data = fetch_weather_data(
         weather.city, weather.date.isoformat())
 
@@ -31,10 +39,15 @@ def post_weather(weather: WeatherCreate, db: Session = Depends(get_db)):
     raise HTTPException(status_code=404, detail="Weather data not found")
 
 
-@weather_router.post("/weatherqueued/")
+@weather_router.post("/weatherqueued/", response_model=WeatherPostResponse)
 def post_weather_queued(weather: WeatherCreate):
     fetch_and_store_weather.delay(weather.city, weather.date)
-    return {"message": "Weather data fetch task started."}
+    return WeatherPostResponse(
+        city=weather.city,
+        date=weather.date,
+        status="queued",
+        message="Weather data fetch task scheduled."
+    )
 
 
 @weather_router.get("/weather/", response_model=WeatherGetResponse)
@@ -44,7 +57,7 @@ def get_weather(query: WeatherQueryParams = Depends(),
     if weather is None:
         raise HTTPException(
             status_code=404,
-            detail=f"Weather data not found for {query.city} on {query.date}")
+            detail=f"Weather data not found for {query.city} on {query.date}.")
     return weather
 
 

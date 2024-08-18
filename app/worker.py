@@ -1,6 +1,6 @@
 import os
 from .external.weather_api import fetch_weather_data
-from .crud import create_weather_entry
+from .crud import create_weather_entry, weather_already_exists
 from .models import get_db
 
 from celery import Celery
@@ -14,12 +14,13 @@ celery.conf.result_backend = os.environ.get(
 
 @celery.task(name="fetch_and_store_weather")
 def fetch_and_store_weather(city: str, date: str):
+    session = next(get_db())
+
+    if weather_already_exists(session, city, date):
+        return True
+
     weather_data = fetch_weather_data(
         city, date.isoformat())
-
-    print(weather_data)
-
-    session = get_db()
 
     if weather_data:
         create_weather_entry(next(session),
