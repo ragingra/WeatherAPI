@@ -15,7 +15,7 @@ from worker import fetch_and_store_weather
 app = FastAPI()
 weather_router = APIRouter()
 
-templates = Jinja2Templates(directory="app/templates")
+templates = Jinja2Templates(directory="templates")
 
 
 @weather_router.post("/weather/", response_model=WeatherPostResponse)
