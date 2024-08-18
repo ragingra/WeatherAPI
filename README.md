@@ -2,6 +2,8 @@
 
 This project is a FastAPI application that interacts with an external weather API to store and retrieve weather data for different cities. The application uses PostgreSQL for data storage, Redis for task queuing with Celery, and Docker for containerization.
 
+Live at [weatherapi.nlndrsn.com](https://weatherapi.nlndrsn.com/)
+
 ## Table of Contents
 
 - [City Weather API Project](#city-weather-api-project)
