@@ -1,10 +1,11 @@
 from pydantic import BaseModel, Field, ConfigDict,  field_validator
 from datetime import date as datetime_date
+from fastapi import Query
 
 
 class WeatherBase(BaseModel):
-    city: str = Field()
-    date: datetime_date = Field()
+    city: str = Field(examples=["Belfast"])
+    date: datetime_date = Field(examples=["2023-08-15"])
 
 
 class WeatherCreate(WeatherBase):
@@ -12,15 +13,15 @@ class WeatherCreate(WeatherBase):
 
 
 class WeatherPostResponse(WeatherBase):
-    status: str = Field()
-    message: str = Field()
+    status: str = Field(examples=["success"])
+    message: str = Field(examples=["Weather data stored successfully"])
 
 
 class WeatherGetResponse(WeatherBase):
-    min_temp: float = Field()
-    max_temp: float = Field()
-    average_temp: float = Field()
-    humidity: float = Field()
+    min_temp: float = Field(examples=[20.05])
+    max_temp: float = Field(examples=[51.93])
+    average_temp: float = Field(examples=[35.99])
+    humidity: float = Field(examples=[76.38])
 
     @field_validator('min_temp', 'max_temp', 'average_temp', mode='before')
     def convert_and_round_temp(cls, value):
@@ -34,9 +35,5 @@ class WeatherGetResponse(WeatherBase):
 
 
 class WeatherQueryParams(BaseModel):
-    city: str = Field()
-    date: datetime_date = Field()
-
-    model_config = ConfigDict(
-        json_schema_extra={
-            'examples': [{'city': 'Belfast', 'date': '2023-12-24'}]})
+    city: str = Field(Query(example="Belfast"))
+    date: datetime_date = Field(Query(example="2023-08-15"))
