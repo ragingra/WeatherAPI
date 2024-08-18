@@ -1,7 +1,7 @@
 import os
-from .external.weather_api import fetch_weather_data
-from .crud import create_weather_entry, weather_already_exists
-from .models import get_db
+from external.weather_api import fetch_weather_data
+from crud import create_weather_entry, weather_already_exists
+from models import get_db
 
 from celery import Celery
 

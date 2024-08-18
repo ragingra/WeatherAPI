@@ -1,8 +1,8 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import func
-from .models import CityWeather
+from models import CityWeather
 from datetime import datetime
-from .schemas import WeatherPostResponse
+from schemas import WeatherPostResponse
 
 
 def get_weather_by_date(db: Session, city: str, date: str):

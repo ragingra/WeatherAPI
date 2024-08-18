@@ -11,10 +11,8 @@ services:
 
   web:
     build: ./app
-    command: uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
     volumes:
-      - .:/code
-      - ./app/templates:/code/app/templates
+      - ./app:/app
     ports:
       - "8000:8000"
     depends_on:
@@ -38,7 +36,7 @@ services:
       CELERY_RESULT_BACKEND: redis://redis:6379/0
       USE_STUB_DATA: ${USE_STUB_DATA}
     volumes:
-      - .:/code
+      - ./app:/app
     depends_on:
       - db
       - redis

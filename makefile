@@ -18,11 +18,6 @@ test:
 	@echo "Running tests..."
 	@docker-compose exec web pytest
 
-# Run the FastAPI application
-run:
-	@echo "Starting the FastAPI server..."
-	@uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
-
 # Start Docker containers
 docker-up:
 	@echo "Starting Docker containers..."
@@ -35,4 +30,4 @@ docker-down:
 
 db-init:
 	@echo "Initializing the database..."
-	@docker-compose exec web python app/db_init.py
+	@docker-compose exec web python db_init.py

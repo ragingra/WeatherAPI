@@ -6,13 +6,15 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 # Set work directory
-WORKDIR /code
+WORKDIR /app
+
+# Copy project
+COPY . /app/
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends gcc libpq-dev && rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies
-COPY requirements.txt /code/
 RUN pip install --no-cache-dir --upgrade pip && pip install --no-cache-dir -r requirements.txt
 
 # Create a non-root user
@@ -21,8 +23,5 @@ RUN useradd -m celeryuser
 # Set the user to the non-root user
 USER celeryuser
 
-# Copy project
-COPY . /code/
-
 # Command to run the application
-CMD ["celery", "-A", "app.worker.celery", "worker", "--loglevel=info"]
+CMD ["celery", "-A", "worker.celery", "worker", "--loglevel=info"]
